@@ -56,7 +56,7 @@ const CONFIG = {
             reactionTime: 0.05,
             accuracy: 0.9,
             errorRange: 10,
-            centeringSpeed: 0.6,
+            centeringSpeed: 1.0,
             missChance: 0.05
         }
     }
