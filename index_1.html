@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Ping Pong - Professional Gaming Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Animated Background Elements -->
+        <div class="background-animation">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <!-- Main Menu -->
+        <div id="mainMenu" class="screen menu-screen">
+            <div class="menu-content">
+                <div class="game-logo">
+                    <h1 class="game-title">
+                        <span class="title-main">ELITE</span>
+                        <span class="title-sub">PING PONG</span>
+                    </h1>
+                    <div class="logo-glow"></div>
+                </div>
+                <div class="menu-buttons">
+                    <button id="startGameBtn" class="btn btn--primary btn--lg menu-btn">
+                        <span class="btn-text">Start Game</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button id="settingsBtn" class="btn btn--secondary btn--lg menu-btn">
+                        <span class="btn-text">Settings</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                <div class="menu-footer">
+                    <div class="controls-preview">
+                        <span class="control-hint">
+                            <kbd>W</kbd><kbd>S</kbd> or <kbd>↑</kbd><kbd>↓</kbd> to move • <kbd>ESC</kbd> to pause
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen game-screen hidden">
+            <div class="game-ui">
+                <div class="score-display">
+                    <div class="player-score">
+                        <div class="score-info">
+                            <span class="score-label">PLAYER</span>
+                            <div class="score-container">
+                                <span id="playerScore" class="score-number">0</span>
+                                <div class="score-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-info">
+                        <div class="info-panel">
+                            <div id="gameTimer" class="timer">00:00</div>
+                            <div class="speed-display">
+                                <span class="speed-label">SPEED</span>
+                                <div id="ballSpeedIndicator" class="speed-indicator">
+                                    <span id="speedValue">400</span>
+                                    <span class="speed-unit">px/s</span>
+                                </div>
+                            </div>
+                            <div class="difficulty-indicator">
+                                <span class="diff-label">AI LEVEL</span>
+                                <span id="currentDifficulty" class="diff-value">MEDIUM</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-score">
+                        <div class="score-info">
+                            <span class="score-label">AI OPPONENT</span>
+                            <div class="score-container">
+                                <span id="aiScore" class="score-number">0</span>
+                                <div class="score-glow ai-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Indicators -->
+                <div class="performance-bar">
+                    <div class="performance-item">
+                        <span class="perf-label">Ball Speed</span>
+                        <div class="progress-bar">
+                            <div id="speedProgress" class="progress-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="gameCanvas" width="800" height="400"></canvas>
+                <div class="canvas-glow"></div>
+            </div>
+            
+            <div class="controls-hint">
+                <div class="hint-container">
+                    <span class="hint-text">
+                        <kbd class="key-hint">W</kbd><kbd class="key-hint">S</kbd> Move Paddle • 
+                        <kbd class="key-hint">ESC</kbd> Pause Game • 
+                        First to <strong>5 points</strong> wins
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settingsScreen" class="screen settings-screen hidden">
+            <div class="settings-content">
+                <h2 class="settings-title">
+                    <span class="title-icon">⚙</span>
+                    Game Settings
+                </h2>
+                
+                <div class="settings-form">
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label">AI Difficulty</label>
+                            <div class="select-wrapper">
+                                <select id="difficultySelect" class="form-control form-select">
+                                    <option value="easy">Easy - Relaxed Play</option>
+                                    <option value="medium" selected>Medium - Balanced</option>
+                                    <option value="hard">Hard - Challenging</option>
+                                    <option value="expert">Expert - Pro Level</option>
+                                </select>
+                                <div class="select-arrow"></div>
+                            </div>
+                            <small class="form-help">Choose your preferred challenge level</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Sound Volume</label>
+                            <div class="volume-control">
+                                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="70">
+                                <span id="volumeValue" class="volume-display">70%</span>
+                            </div>
+                            <small class="form-help">Adjust game sound effects</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Visual Effects</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="trailEffectCheckbox" class="trail-checkbox" checked>
+                                    <label for="trailEffectCheckbox" class="checkbox-label">
+                                        <span class="checkbox-custom"></span>
+                                        Ball Trail Effect
+                                    </label>
+                                </div>
+                            </div>
+                            <small class="form-help">Enable enhanced visual effects</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-buttons">
+                    <button id="backToMenuBtn" class="btn btn--outline btn--lg">
+                        <span class="btn-text">← Back to Menu</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen game-over-screen hidden">
+            <div class="game-over-content">
+                <div class="victory-animation">
+                    <h2 id="winnerText" class="winner-text">Player Wins!</h2>
+                    <div class="winner-glow"></div>
+                </div>
+                
+                <div class="final-stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3 class="stat-title">Final Score</h3>
+                            <div class="score-breakdown">
+                                <div class="score-item player-final">
+                                    <span class="score-team">Player</span>
+                                    <span id="finalPlayerScore" class="score-final">0</span>
+                                </div>
+                                <div class="score-vs">VS</div>
+                                <div class="score-item ai-final">
+                                    <span class="score-team">AI</span>
+                                    <span id="finalAiScore" class="score-final">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h3 class="stat-title">Game Statistics</h3>
+                            <div class="game-stats">
+                                <div class="stat-row">
+                                    <span class="stat-label">Duration</span>
+                                    <span id="finalGameTime" class="stat-value">00:00</span>
+                                </div>
+                                <div class="stat-row">
+                                    <span class="stat-label">Max Speed</span>
+                                    <span class="stat-value">
+                                        <span id="maxSpeedReached">400</span> px/s
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-over-buttons">
+                    <button id="playAgainBtn" class="btn btn--primary btn--lg">
+                        <span class="btn-text">🎮 Play Again</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button id="mainMenuBtn" class="btn btn--secondary btn--lg">
+                        <span class="btn-text">🏠 Main Menu</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pauseScreen" class="screen pause-screen hidden">
+            <div class="pause-content">
+                <div class="pause-animation">
+                    <h2 class="pause-title">⏸ Game Paused</h2>
+                    <div class="pause-subtitle">Take a breather, champion!</div>
+                </div>
+                
+                <div class="pause-buttons">
+                    <button id="resumeBtn" class="btn btn--primary btn--lg">
+                        <span class="btn-text">▶ Resume Game</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button id="pauseMenuBtn" class="btn btn--outline btn--lg">
+                        <span class="btn-text">🏠 Main Menu</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                
+                <div class="pause-tips">
+                    <h3 class="tips-title">Pro Tips</h3>
+                    <ul class="tips-list">
+                        <li>Watch the ball's trajectory to predict bounces</li>
+                        <li>Hit the ball with different parts of your paddle for varied angles</li>
+                        <li>Keep your paddle moving smoothly for better control</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Overlay -->
+        <div id="instructionsOverlay" class="overlay hidden">
+            <div class="instructions-content">
+                <div class="instructions-header">
+                    <h3 class="instructions-title">🏓 How to Play</h3>
+                    <div class="instructions-subtitle">Master the Elite Ping Pong Challenge</div>
+                </div>
+                
+                <div class="instructions-body">
+                    <div class="instruction-group">
+                        <h4 class="group-title">Controls</h4>
+                        <ul class="instruction-list">
+                            <li>
+                                <div class="instruction-item">
+                                    <div class="keys-combo">
+                                        <kbd>W</kbd><kbd>S</kbd> or <kbd>↑</kbd><kbd>↓</kbd>
+                                    </div>
+                                    <span>Move your paddle up and down</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="instruction-item">
+                                    <div class="keys-combo"><kbd>ESC</kbd></div>
+                                    <span>Pause/Resume the game</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="instruction-group">
+                        <h4 class="group-title">Objective</h4>
+                        <ul class="instruction-list">
+                            <li>First player to reach <strong class="highlight">5 points</strong> wins</li>
+                            <li>Ball speed increases with each paddle hit</li>
+                            <li>Hit different parts of your paddle for varied ball angles</li>
+                            <li>Watch out for wall bounces and plan your moves</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="instructions-footer">
+                    <button id="startPlayingBtn" class="btn btn--primary btn--lg">
+                        <span class="btn-text">🚀 Start Playing</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Animation -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <div class="loading-text">Loading Elite Experience...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
